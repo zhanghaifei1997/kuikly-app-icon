@@ -57,13 +57,19 @@ gpg --keyserver keyserver.ubuntu.com --send-keys B2EE9DFD
 
 ## 3. CocoaPods（iOS 模块）
 
-```bash
-cd kuiklyAppIconIOS
-pod lib lint --allow-warnings
-KUIKLY_APP_ICON_VERSION=0.1.0 pod trunk push kuiklyAppIconIOS.podspec --allow-warnings
-```
+> ⚠️ 本机 Xcode 27 的 SDK 最低支持 iOS 15.0，而依赖 `OpenKuiklyIOSRender` 线上全部版本声明 12.0，
+> 本机 lint/push 必然编译失败。**用 GitHub Actions 的 macos-15 runner（默认 Xcode 16）发布**：
+> 仓库已内置 `.github/workflows/trunk-push.yml`（workflow_dispatch 手动触发，trunk 会话凭据存于
+> GitHub Secret `COCOAPODS_TRUNK_NETRC`，从本机 `~/.netrc` 经管道导入，不落任何仓库文件）。
 
-前置：源码已推 GitHub 且打了 `0.1.0` tag（podspec source 按 tag 拉取）。
+流程：
+
+1. 更新 podspec 版本并提交推送、打对应 tag（trunk 按 tag 拉源码）
+2. Actions 页面手动触发 `trunk-push`（或 `gh workflow run trunk-push.yml`）
+3. `pod trunk info kuiklyAppIconIOS` 确认版本已收录
+
+注意：podspec 位于**仓库根**（trunk 拉取 tag 后文件模式按仓库根解析，`source_files` 需带
+`kuiklyAppIconIOS/` 目录前缀）；本地 `:path` 开发时同样以仓库根为 pod 根，两种方式一致。
 
 ## 4. OHPM（鸿蒙模块）
 
