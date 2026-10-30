@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "description": "Kuikly dynamic app icon module (HarmonyOS side)",
   "main": "Index.ets",
-  "author": "Zhanghaifei",
+  "author": {
+    "name": "Zhanghaifei",
+    "email": "2428669833@qq.com",
+    "url": "https://github.com/zhanghaifei1997"
+  },
   "license": "MIT",
   "dependencies": {
     "@kuikly-open/render": "*"
