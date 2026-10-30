@@ -8,6 +8,9 @@
     "email": "2428669833@qq.com",
     "url": "https://github.com/zhanghaifei1997"
   },
+  "homepage": "https://github.com/zhanghaifei1997/kuikly-app-icon",
+  "repository": "https://github.com/zhanghaifei1997/kuikly-app-icon",
+  "keywords": ["kuikly", "app-icon", "harmonyos", "arkts"],
   "license": "MIT",
   "dependencies": {
     "@kuikly-open/render": "*"
