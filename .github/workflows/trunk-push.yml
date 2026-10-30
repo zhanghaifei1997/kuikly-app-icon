@@ -18,6 +18,11 @@ jobs:
         run: |
           printf '%s\n' "${{ secrets.COCOAPODS_TRUNK_NETRC }}" > ~/.netrc
           chmod 600 ~/.netrc
-      - name: Pod trunk push
+      - name: Pod trunk push (idempotent)
         run: |
+          V="${KUIKLY_APP_ICON_VERSION:-0.1.0}"
+          if pod trunk info kuiklyAppIconIOS 2>/dev/null | grep -q " $V "; then
+            echo "::notice::kuiklyAppIconIOS $V 已在 trunk，跳过推送"
+            exit 0
+          fi
           pod trunk push kuiklyAppIconIOS.podspec --skip-import-validation --skip-tests --allow-warnings --synchronous
