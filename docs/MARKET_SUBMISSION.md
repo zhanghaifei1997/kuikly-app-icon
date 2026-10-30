@@ -11,27 +11,28 @@
 
 ## PR 内容
 
-### 1. KuiklyUI-Libraries.json 条目草稿
+### 1. KuiklyUI-Libraries.json 条目（2026-10-30 实际提交的格式）
 
-按仓库中同类型条目（参考 gycrosskit 系列的 KuiklyModule 条目）的字段格式添加：
+⚠️ 提交前务必以仓库内现有条目为准（历史文档曾使用 name/type/platforms 等字段，实际格式是
+componentName/componentType/githubUrl/developer + 平台布尔值）。0.1.0 实际提交的条目：
 
 ```json
 {
-  "name": "kuikly-app-icon",
-  "type": "KuiklyModule",
-  "description": "动态更换 App 图标组件：Kotlin 侧一套 API 切换三端桌面图标（iOS setAlternateIconName / Android activity-alias / 鸿蒙 API26+ bundleManager.setAlternateIcon），支持能力检查、当前图标查询、静默切换，统一回调契约。",
-  "platforms": ["Android", "iOS", "Ohos"],
-  "repo": "https://github.com/zhanghaifei1997/kuikly-app-icon",
-  "owner": "zhanghaifei1997",
-  "links": {
-    "maven": "https://central.sonatype.com/artifact/io.github.zhanghaifei1997/kuiklyAppIcon",
-    "cocoapods": "https://cocoapods.org/pods/kuiklyAppIconIOS",
-    "ohpm": "https://ohpm.openharmony.cn/#/cn/detail/kuikly-app-icon-ohos"
-  }
+  "githubUrl": "https://github.com/zhanghaifei1997/kuikly-app-icon",
+  "examples": ["https://github.com/zhanghaifei1997/kuikly-app-icon/tree/main/demo"],
+  "componentName": "kuikly-app-icon",
+  "componentDescription": "Kuikly 动态更换 App 图标组件：Kotlin 侧一套统一 API（setIcon / getCurrentIcon / getSupportedIcons / isSupported）切换 Android（activity-alias）/ iOS（setAlternateIconName）/ 鸿蒙 API 26+（bundleManager.setAlternateIcon）三端桌面图标，图标由宿主预置声明，统一 JSON 回调契约与错误码，支持 iOS 静默切换。产物已发布 Maven Central / CocoaPods / OHPM。",
+  "componentType": "KuiklyModule",
+  "developer": "zhanghaifei1997",
+  "Android": true,
+  "iOS": true,
+  "Ohos": true,
+  "sDynamic": false
 }
 ```
 
-> 提交前先对照仓库内 JSON 的实际字段（不同时期模板字段有增减），与已有条目保持一致。
+已提交 PR：<https://github.com/Tencent-TDS/KuiklyUI-third-party/pull/47>（fork 分支
+`zhanghaifei1997: add-kuikly-app-icon`）
 
 ### 2. PR 说明模板
 
