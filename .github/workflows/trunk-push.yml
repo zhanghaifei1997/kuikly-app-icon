@@ -1,0 +1,24 @@
+name: trunk-push
+# 用 macos-15 runner（默认 Xcode 16，SDK 最低支持 iOS 12.0）发布 CocoaPods：
+# 本机 Xcode 27 SDK 最低 15.0，会拒绝依赖 OpenKuiklyIOSRender 的 12.0 部署目标
+on: workflow_dispatch
+
+jobs:
+  push:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: '0.1.0'
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          pod --version
+      - name: Restore trunk session
+        run: |
+          printf '%s\n' "${{ secrets.COCOAPODS_TRUNK_NETRC }}" > ~/.netrc
+          chmod 600 ~/.netrc
+      - name: Pod trunk push
+        run: |
+          pod repo update
+          pod trunk push kuiklyAppIconIOS.podspec --skip-import-validation --skip-tests --allow-warnings --synchronous
