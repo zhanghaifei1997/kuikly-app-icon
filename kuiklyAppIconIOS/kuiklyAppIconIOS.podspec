@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.license          = { :type => "MIT", :file => "../LICENSE" }
   s.author           = { "Zhanghaifei" => "2428669833@qq.com" }
   s.source           = { :git => "https://github.com/zhanghaifei1997/kuikly-app-icon.git", :tag => "#{s.version}" }
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '15.0'
   s.requires_arc     = true
   s.source_files     = "Classes/**/*.{h,m}"
   s.public_header_files = "Classes/KRAppIconModule.h"

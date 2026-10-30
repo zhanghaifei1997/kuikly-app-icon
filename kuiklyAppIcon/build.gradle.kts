@@ -32,7 +32,7 @@ kotlin {
     cocoapods {
         summary = "Kuikly dynamic app icon module"
         homepage = "https://github.com/zhanghaifei1997/kuikly-app-icon"
-        ios.deploymentTarget = "12.0"
+        ios.deploymentTarget = "15.0"
         framework {
             baseName = "kuiklyAppIcon"
         }
