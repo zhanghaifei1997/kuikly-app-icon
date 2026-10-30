@@ -20,5 +20,4 @@ jobs:
           chmod 600 ~/.netrc
       - name: Pod trunk push
         run: |
-          pod repo update
           pod trunk push kuiklyAppIconIOS.podspec --skip-import-validation --skip-tests --allow-warnings --synchronous
