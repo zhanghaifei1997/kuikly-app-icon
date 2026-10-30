@@ -1,0 +1,44 @@
+<!-- iOS 宿主配置示例：Info.plist 预置备用图标（名称需与业务侧 setIcon(name) 使用的名称一致） -->
+<!-- iOS 10.3+ 生效；示例图标名：summer_theme / winter_theme -->
+<!-- 注意：CFBundleAlternateIcons 必须嵌套在 CFBundleIcons 内（规范结构，真机必需），不能放在 plist 顶层 -->
+<key>CFBundleIcons</key>
+<dict>
+    <key>CFBundlePrimaryIcon</key>
+    <dict>
+        <key>CFBundleIconName</key>
+        <string>AppIcon</string>
+    </dict>
+    <key>CFBundleAlternateIcons</key>
+    <dict>
+        <key>summer_theme</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>icon_summer</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+        <key>winter_theme</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>icon_winter</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+    </dict>
+</dict>
+
+<!--
+注意事项：
+1. 备用图标只能预置在包内，不能运行时下载任意图片作为图标
+2. 图标 PNG 需以 bundle 资源形式打入包内（如 icon_summer.png 直接作为 target 的资源文件，
+   1024x1024 无透明通道）；仅放 Assets.xcassets 的普通 imageset 在部分真机系统上不可寻址，
+   会导致 setAlternateIconName 返回 "feature is not supported"
+3. setAlternateIconName 切换时系统默认弹出"您已更改此App的图标"提示（可用组件的
+   setIconSilent 静默切换，基于私有 API，有审核风险，见组件 README）
+4. iOS 侧 Module 通过运行时类名 KRAppIconModule 创建，接入 kuiklyAppIconIOS pod 后无需手动注册
+5. Podfile 添加：pod 'kuiklyAppIconIOS', :path => '../kuiklyAppIconIOS'
+-->

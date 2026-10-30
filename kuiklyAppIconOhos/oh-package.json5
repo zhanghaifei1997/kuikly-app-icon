@@ -1,0 +1,11 @@
+{
+  "name": "kuikly-app-icon-ohos",
+  "version": "0.1.0",
+  "description": "Kuikly dynamic app icon module (HarmonyOS side)",
+  "main": "Index.ets",
+  "author": "Zhanghaifei",
+  "license": "MIT",
+  "dependencies": {
+    "@kuikly-open/render": "*"
+  }
+}

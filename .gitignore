@@ -1,0 +1,9 @@
+.gradle/
+build/
+local.properties
+*.gpg
+*.asc
+.DS_Store
+.idea/
+*.iml
+.mimosa/

@@ -1,0 +1,75 @@
+<!--
+Android 宿主配置示例：activity-alias 预置多套图标入口
+约定：所有别名命名 <applicationId>.icon.<name>，其中 .icon.default 为默认图标（初始 enabled），
+其余初始 android:enabled="false"。业务侧 setIcon("summer_theme") 即启用 .icon.summer_theme。
+重要：真实启动 Activity 的 intent-filter 中不要再保留 MAIN/LAUNCHER（launcher 入口全部由别名承担），
+否则会出现双图标。
+-->
+<application ...>
+
+    <!-- 真实入口 Activity：只保留正常业务配置，不带 LAUNCHER filter -->
+    <activity
+        android:name=".MainActivity"
+        android:exported="false" />
+
+    <!-- 默认图标别名（初始启用） -->
+    <activity-alias
+        android:name=".icon.default"
+        android:enabled="true"
+        android:exported="true"
+        android:icon="@mipmap/ic_launcher_default"
+        android:targetActivity=".MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity-alias>
+
+    <!-- 夏日主题图标别名（初始禁用） -->
+    <activity-alias
+        android:name=".icon.summer_theme"
+        android:enabled="false"
+        android:exported="true"
+        android:icon="@mipmap/ic_launcher_summer"
+        android:targetActivity=".MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity-alias>
+
+    <!-- 冬日主题图标别名（初始禁用） -->
+    <activity-alias
+        android:name=".icon.winter_theme"
+        android:enabled="false"
+        android:exported="true"
+        android:icon="@mipmap/ic_launcher_winter"
+        android:targetActivity=".MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity-alias>
+
+</application>
+
+<!--
+注册 Module（在实现 KuiklyRenderViewBaseDelegatorDelegate 的类中）：
+
+override fun registerExternalModule(kuiklyRenderExport: IKuiklyRenderExport) {
+    super.registerExternalModule(kuiklyRenderExport)
+    with(kuiklyRenderExport) {
+        moduleExport(KRAppIconModule.MODULE_NAME) {
+            KRAppIconModule()
+        }
+    }
+}
+
+build.gradle 添加依赖：
+implementation(project(":kuiklyAppIconAndroid"))
+
+注意事项：
+1. 切换图标后桌面图标刷新有延迟（系统广播节奏），部分定制 ROM 需要 1~10 秒
+2. 图标资源（mipmap）必须预置，不能运行时下载
+3. DONT_KILL_APP 模式下切换不杀进程，但个别 ROM 仍可能重启应用，建议在合适的业务时机切换
+-->

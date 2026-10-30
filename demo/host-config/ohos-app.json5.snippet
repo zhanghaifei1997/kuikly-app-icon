@@ -1,0 +1,40 @@
+// 鸿蒙宿主配置示例：AppScope/app.json5 的 alternateIcons 预置备用图标（API 26.0.0+）
+// name 需与业务侧 setIcon(name) 一致；icon 引用 resources/base/media 下的资源
+{
+  "app": {
+    // ...其余 app 配置
+    "alternateIcons": [
+      {
+        "name": "summer_theme",
+        "icon": "$media:icon_summer"
+      },
+      {
+        "name": "winter_theme",
+        "icon": "$media:icon_winter"
+      }
+    ]
+  }
+}
+
+/*
+注册 Module（ohosApp 工程中实现 IKuiklyViewDelegate 的类）：
+
+export class KuiklyViewDelegate extends IKuiklyViewDelegate {
+  getCustomRenderModuleCreatorRegisterMap(): Map<string, KRRenderModuleExportCreator> {
+    const map: Map<string, KRRenderModuleExportCreator> = new Map();
+    map.set(KRAppIconModule.MODULE_NAME, () => new KRAppIconModule());
+    return map;
+  }
+}
+
+ohosApp 的 oh-package.json5 添加依赖（本地路径方式）：
+"@kuikly/app-icon-ohos": "file:../../kuiklyAppIconOhos"
+或在根目录 build-profile.json5 的 modules 中登记：
+{ "name": "kuiklyAppIconOhos", "srcPath": "../kuiklyAppIconOhos" }
+
+限制（官方文档）：
+1. 仅 bundleType 为 app 时 alternateIcons 生效
+2. 应用最多同时启用一个备用图标（setAlternateIcon 空串恢复默认）
+3. 分身应用不支持设置和查询备用图标
+4. 备用图标支持单层图标和分层图标，资源准备方式与默认图标一致
+*/
