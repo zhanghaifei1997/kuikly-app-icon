@@ -1,0 +1,6 @@
+# kuikly-app-icon-ohos 混淆保留规则
+# 保留 Kuikly 渲染框架反射调用的属性/方法名
+-keep-property-name
+call
+syncMode
+MODULE_NAME
