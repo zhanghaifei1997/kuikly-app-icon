@@ -73,14 +73,34 @@ gpg --keyserver keyserver.ubuntu.com --send-keys B2EE9DFD
 
 ## 4. OHPM（鸿蒙模块）
 
+> 实战踩坑记录（2026-10-30 首次发布，全部为注册中心强制校验，缺一项报一项）：
+
+**包内容要求**（均需打包进 HAR 根级，参照官方 `@kuikly-open/render` 布局）：
+- `oh-package.json5` 的 `author` 必须是**对象**且带 `email` 或 `url`（纯名字字符串报 400）
+- `oh-package.json5` 必须有 `repository`（URL 需以 http/https 开头），建议同补 `homepage`、`keywords`
+- 模块目录需包含非空 `LICENSE`、`README.md`、`CHANGELOG.md`（hvigor 打 HAR 时自动收入包根）
+
+**认证要求**：
+- 私钥必须 **PEM 格式 + 非空口令**（`ssh-keygen -m PEM`；OpenSSH 格式/空口令均报"private key not supported"）
+- 公钥需先上传 ohpm 个人中心；`ohpm config set publish_id <发布码>` + `ohpm config set key_path <私钥路径>`
+- 发布时口令为**交互式隐藏输入**（readline setRawMode，管道/expect 伪终端均不可用，必须真实终端）
+
+**构建与发布**：
+
 ```bash
-export PATH=$PATH:/Applications/DevEco-Studio.app/Contents/tools/ohpm/bin
-cd kuiklyAppIconOhos
-ohpm login   # ohpm.openharmony.cn 注册的华为账号
-ohpm publish
+# 构建 HAR（宿主 ohosApp 工程根）
+export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
+cd ~/KuiklyDebug/KuiklyUI/ohosApp
+/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw --mode module \
+  -p module=kuiklyAppIconOhos@default assembleHar --no-daemon
+
+# 发布（⚠️ PATH 里 DevEco 的 node 必须排最前，否则 ohpm 用错 node 直接崩溃；
+#    需在真实终端执行，会提示输入私钥口令）
+export PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH:/Applications/DevEco-Studio.app/Contents/tools/ohpm/bin
+ohpm publish ~/KuiklyDebug/KuiklyUI/kuiklyAppIconOhos/build/default/outputs/default/kuiklyAppIconOhos.har
 ```
 
-官方指引：<https://ohpm.openharmony.cn/#/cn/help/createandpublish>
+提交后进入运营审核（个人中心 → 我的包 查看状态）。官方指引：<https://ohpm.openharmony.cn/#/cn/help/createandpublish>
 
 ## 5. 版本约定
 
