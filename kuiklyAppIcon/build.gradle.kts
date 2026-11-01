@@ -32,9 +32,15 @@ kotlin {
     cocoapods {
         summary = "Kuikly dynamic app icon module"
         homepage = "https://github.com/zhanghaifei1997/kuikly-app-icon"
+        // trunk 必需元数据（0.1.1 起推送 KMP 框架 pod kuiklyAppIcon 到 CocoaPods trunk）
+        authors = "Zhanghaifei"
+        license = "MIT"
+        source = "https://github.com/zhanghaifei1997/kuikly-app-icon"
+        version = project.findProperty("kuiklyAppIcon.version") as String? ?: "0.1.1"
         ios.deploymentTarget = "15.0"
         framework {
             baseName = "kuiklyAppIcon"
+            isStatic = true
         }
     }
 

@@ -1,15 +1,28 @@
 name: trunk-push
 # 用 macos-15 runner（默认 Xcode 16，SDK 最低支持 iOS 12.0）发布 CocoaPods：
 # 本机 Xcode 27 SDK 最低 15.0，会拒绝依赖 OpenKuiklyIOSRender 的 12.0 部署目标
-on: workflow_dispatch
+#
+# 自 0.1.1 起推送两个 pod：
+#   kuiklyAppIconIOS —— iOS 原生实现（源码 pod，source = git tag）
+#   kuiklyAppIcon    —— KMP 共享框架（二进制 pod，source = GitHub Release zip 中的 XCFramework）
+# 前置：tag <version> 已推送，且 GitHub Release 已上传 kuiklyAppIcon-<version>.zip
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (同 git tag / Release)'
+        required: true
+        default: '0.1.1'
 
 jobs:
   push:
     runs-on: macos-15
+    env:
+      KUIKLY_APP_ICON_VERSION: ${{ github.event.inputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: '0.1.0'
+          ref: ${{ github.event.inputs.version }}
       - name: Show toolchain
         run: |
           xcodebuild -version
@@ -18,11 +31,20 @@ jobs:
         run: |
           printf '%s\n' "${{ secrets.COCOAPODS_TRUNK_NETRC }}" > ~/.netrc
           chmod 600 ~/.netrc
-      - name: Pod trunk push (idempotent)
+      - name: Pod trunk push kuiklyAppIconIOS (idempotent)
         run: |
-          V="${KUIKLY_APP_ICON_VERSION:-0.1.0}"
+          V="${KUIKLY_APP_ICON_VERSION}"
           if pod trunk info kuiklyAppIconIOS 2>/dev/null | grep -q " $V "; then
             echo "::notice::kuiklyAppIconIOS $V 已在 trunk，跳过推送"
-            exit 0
+          else
+            pod trunk push kuiklyAppIconIOS.podspec --skip-import-validation --skip-tests --allow-warnings --synchronous
           fi
-          pod trunk push kuiklyAppIconIOS.podspec --skip-import-validation --skip-tests --allow-warnings --synchronous
+      - name: Pod trunk push kuiklyAppIcon (idempotent)
+        run: |
+          V="${KUIKLY_APP_ICON_VERSION}"
+          if pod trunk info kuiklyAppIcon 2>/dev/null | grep -q " $V "; then
+            echo "::notice::kuiklyAppIcon $V 已在 trunk，跳过推送"
+          else
+            # 二进制 pod：lint 会下载 Release zip 解压 XCFramework 校验
+            pod trunk push kuiklyAppIcon.podspec --skip-import-validation --skip-tests --allow-warnings --synchronous
+          fi

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "kuiklyAppIconIOS"
-  s.version          = ENV['KUIKLY_APP_ICON_VERSION'] || '0.1.0'
+  s.version          = ENV['KUIKLY_APP_ICON_VERSION'] || '0.1.1'
   s.summary          = "Kuikly dynamic app icon module (iOS side)"
   s.description      = <<-DESC
                         Kuikly 动态更换 App 图标组件的 iOS 原生实现：
