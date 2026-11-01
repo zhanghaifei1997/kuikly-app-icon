@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.1 (2026-11-01)
+
+无 API 变化；补齐 iOS 端产物化分发。
+
+### 分发
+
+- 新增 KMP 共享框架 pod `kuiklyAppIcon`（CocoaPods trunk）：静态 XCFramework（真机 arm64 + 模拟器 arm64/x86_64，iOS 15.0+），由 GitHub Release 托管，`pod install` 无需 gradle/源码
+- `kuiklyAppIconIOS` pod 同步升版；iOS 端自此可纯产物接入（此前 shared 部分需源码依赖）
+- Maven Central / OHPM 同步升版 0.1.1
+- `kuikly.component.json` 新增 0.1.1 条目（kpm 包管理器消费）
+
 ## 0.1.0 (2026-10-30)
 
 首个发布版本：Kuikly 动态更换 App 图标组件。
