@@ -15,10 +15,48 @@
           "pods": [
             "kuiklyAppIconIOS {version}"
           ],
-          "sharedNote": "KMP 框架 pod（kuiklyAppIcon）尚未 push 到 CocoaPods trunk，shared 部分暂需源码依赖（计划 0.1.1 补推）"
+          "sharedNote": "KMP 框架 pod（kuiklyAppIcon）0.1.0 未发布，shared 部分需源码依赖；如需纯产物接入请升级到 0.1.1"
         },
         "ohos": {
-          "shared": "io.github.zhanghaifei1997:kuiklyAppIcon:{version}-ohos",
+          "packages": [
+            "kuikly-app-icon-ohos@{version}"
+          ]
+        }
+      },
+      "registration": {
+        "android": {
+          "kind": "module",
+          "snippet": "moduleExport(KRAppIconModule.MODULE_NAME) { KRAppIconModule() }",
+          "anchor": "registerExternalModule（实现 KuiklyRenderViewBaseDelegatorDelegate 的类）"
+        },
+        "ios": null,
+        "ohos": {
+          "kind": "module",
+          "snippet": "map.set(KRAppIconModule.MODULE_NAME, () => new KRAppIconModule());",
+          "anchor": "KuiklyViewDelegate.getCustomRenderModuleCreatorRegisterMap 的 map"
+        }
+      },
+      "hostPrerequisites": {
+        "android": "AndroidManifest.xml 预置 activity-alias 图标别名（<applicationId>.icon.<name>，默认别名 enabled=true，真实启动 Activity 移除 LAUNCHER）",
+        "ios": "Info.plist 预置 CFBundleAlternateIcons（1024x1024 PNG，key 对应 Assets.xcassets 图标）",
+        "ohos": "app.json5 预置 alternateIcons（API 26+，仅 bundleType=app 生效，分身应用不支持）"
+      }
+    },
+    "0.1.1": {
+      "kuikly": ">=2.30.0-2.0.21",
+      "platforms": {
+        "android": {
+          "shared": "io.github.zhanghaifei1997:kuiklyAppIcon:{version}",
+          "app": "io.github.zhanghaifei1997:kuiklyAppIconAndroid:{version}",
+          "repositories": []
+        },
+        "ios": {
+          "pods": [
+            "kuiklyAppIconIOS {version}",
+            "kuiklyAppIcon {version}"
+          ]
+        },
+        "ohos": {
           "packages": [
             "kuikly-app-icon-ohos@{version}"
           ]
