@@ -9,6 +9,18 @@ Kuikly 动态更换 App 图标组件 —— 在 Kuikly（Kotlin）侧一行代�
 | 鸿蒙 | API 26.0.0+ | `bundleManager.setAlternateIcon` + `app.json5` `alternateIcons` | 仅 bundleType=app；同时只能启用一个；分身应用不支持 |
 | H5 / 小程序 | — | 不支持（`isSupported` 返回 false） | — |
 
+## 接入方式
+
+**方式一：kpm 包管理器一键接入**（推荐，[kuikly-kpm](https://github.com/zhanghaifei1997/kuikly-kpm) 已发布 npm）
+
+```bash
+npx kuikly-kpm add kuikly-app-icon
+```
+
+一条命令自动完成三端依赖注入（gradle / Podfile / oh-package.json5）：Android 拉取 Maven Central 坐标，iOS 拉取 CocoaPods 双 pod（`kuiklyAppIconIOS` + KMP 框架 pod `kuiklyAppIcon`），鸿蒙拉取 OHPM 包；随后按终端输出的指引完成 Module 注册与宿主预置配置，`npx kuikly-kpm doctor` 可校验接线完整性。
+
+**方式二：手工接入**——详细步骤见 [docs/INTEGRATION.md](docs/INTEGRATION.md)。
+
 ## 快速使用
 
 ```kotlin
